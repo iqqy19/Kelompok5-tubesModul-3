@@ -1,0 +1,149 @@
+{
+	"info": {
+		"_postman_id": "33a5ee85-6403-497f-8074-008e4d163e83",
+		"name": "New Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23657258",
+		"_collection_link": "https://bold-moon-202055.postman.co/workspace/TefaAPI~7923e815-b9dd-4d6a-99e3-43ec21814ee7/collection/23657258-33a5ee85-6403-497f-8074-008e4d163e83?action=share&creator=23657258&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "Get Users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Impor library JSON Schema Validator\r",
+							"const Ajv = require('ajv');\r",
+							"const ajv = new Ajv();\r",
+							"\r",
+							"// Definisikan skema JSON yang diharapkan\r",
+							"const schema = {\r",
+							"    type: 'object',\r",
+							"    properties: {\r",
+							"        data: {\r",
+							"            type: 'array',\r",
+							"            items: {\r",
+							"                type: 'object',\r",
+							"                properties: {\r",
+							"                    id: { type: 'number' },\r",
+							"                    email: { type: 'string' },\r",
+							"                    first_name: { type: 'string' },\r",
+							"                    last_name: { type: 'string' },\r",
+							"                    avatar: { type: 'string' }\r",
+							"                },\r",
+							"                required: ['id', 'email', 'first_name', 'last_name', 'avatar']\r",
+							"            }\r",
+							"        }\r",
+							"    },\r",
+							"    required: ['data']\r",
+							"};\r",
+							"\r",
+							"// Validasi respon dengan skema JSON yang diharapkan\r",
+							"const validate = ajv.compile(schema);\r",
+							"const valid = validate(pm.response.json());\r",
+							"\r",
+							"// Assertion: Json Schema\r",
+							"pm.test(\"Response memiliki skema yang valid\", function () {\r",
+							"    pm.expect(valid).to.be.true;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://reqres.in/api/users",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// 1. Melakukan asseri pada JSON schema\r",
+							"pm.test(\"Valid JSON schema\", function () {\r",
+							"    const schema = {\r",
+							"        \"type\": \"object\",\r",
+							"        \"properties\": {\r",
+							"            \"name\": {\"type\": \"string\"},\r",
+							"            \"job\": {\"type\": \"string\"},\r",
+							"            \"id\": {\"type\": \"string\"},\r",
+							"            \"createdAt\": {\"type\": \"string\"}\r",
+							"        },\r",
+							"        \"required\": [\"name\", \"job\", \"id\", \"createdAt\"]\r",
+							"    };\r",
+							"\r",
+							"    pm.response.to.have.jsonSchema(schema);\r",
+							"});\r",
+							"\r",
+							"// 2. Melakukan asseri pada Response Time (misalnya, harus di bawah 200ms)\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							"\r",
+							"// 3. Melakukan asseri pada Status Code (misalnya, harus 201 Created)\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"// 4. Melakukan validasi pada data name dan job sesuai dengan yang di-request\r",
+							"pm.test(\"Validasi data name dan job\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"\r",
+							"    // Mengecek apakah data name dan job pada respons sesuai dengan data yang di-request\r",
+							"    pm.expect(responseData.name).to.eql(pm.request.json().name);\r",
+							"    pm.expect(responseData.job).to.eql(pm.request.json().job);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Tefa\",\r\n    \"job\": \"Internship\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://reqres.in/api/users",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
