@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>Login_Page_Invalid_Username</name>
+   <tag></tag>
+   <comment></comment>
+   <testCaseGuid>ef854800-ed24-462d-b20b-9b44b978b93e</testCaseGuid>
+</TestCaseEntity>
